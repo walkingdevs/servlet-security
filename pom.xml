@@ -1,0 +1,43 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>walkingdevs</groupId>
+        <artifactId>parent</artifactId>
+        <version>5</version>
+        <relativePath/>
+    </parent>
+
+    <artifactId>servlet-security</artifactId>
+    <version>6.0</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>walkingdevs</groupId>
+            <artifactId>sdk</artifactId>
+            <version>8.7</version>
+        </dependency>
+
+        <!-- JavaEE 6 API -->
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>6.0-6</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>tomee-jaxrs</artifactId>
+            <version>1.7.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>arquillian-tomee-embedded</artifactId>
+            <version>1.7.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
