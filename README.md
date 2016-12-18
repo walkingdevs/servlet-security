@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/walkingdevs/umbrella.svg?branch=master)](https://travis-ci.org/walkingdevs/umbrella)
+[![Download](https://api.bintray.com/packages/walkingdevs/mvn/umbrella/images/download.svg) ](https://bintray.com/walkingdevs/mvn/umbrella/_latestVersion)
+
 ## Simple Session and Basic Auth security for the ~~fucking~~ Servlet API
 
     <dependency>
