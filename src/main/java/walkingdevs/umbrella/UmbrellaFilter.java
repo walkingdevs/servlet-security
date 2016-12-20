@@ -64,7 +64,10 @@ class UmbrellaFilter implements Filter {
         );
         Path<String> path = Path.mkHttp(
             httpReq.getRequestURI()
-        ).tail();
+        );
+        if (!httpReq.getContextPath().equals("/")) {
+            path = path.tail();
+        }
         Method method = Method.valueOf(httpReq.getMethod());
         AuthMethod authMethod = figureOutAuthMethod(path);
         if (authMethod == AuthMethod.Session) {
@@ -111,14 +114,20 @@ class UmbrellaFilter implements Filter {
             }
         } else {
             // Simply ignore not secured content
-            httpResp.setStatus(404);
+            httpResp.setStatus(403);
         }
     }
 
+    // TODO: tree...
     private AuthMethod figureOutAuthMethod(Path<String> path) {
         for (Perm perm : perms) {
             if (perm.path().equals(path)) {
                 return perm.authenticationMethod();
+            }
+        }
+        for (Perm p : perms) {
+            if (path.string().startsWith(p.path().string())) {
+                return p.authenticationMethod();
             }
         }
         return AuthMethod.None;
@@ -163,7 +172,7 @@ class UmbrellaFilter implements Filter {
     }
 
     private boolean isAllowed(Path<String> path, AuthMethod authMethod, Method method) {
-        boolean anonymousIsAllowed = perms.has(Perm.mk(
+        boolean anonymousIsAllowed = check(Perm.mk(
             path.string(),
             authMethod,
             "anonymous",
@@ -173,7 +182,7 @@ class UmbrellaFilter implements Filter {
             return true;
         }
         for (String authority : umbrella.authorities(umbrella.user())) {
-            boolean allowed = perms.has(Perm.mk(
+            boolean allowed = check(Perm.mk(
                 path.string(),
                 authMethod,
                 authority,
@@ -181,6 +190,22 @@ class UmbrellaFilter implements Filter {
             ));
             if (allowed) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    // TODO: tree...
+    private boolean check(Perm perm) {
+        if (perms.has(perm)) {
+            return true;
+        } else {
+            for (Perm p : perms) {
+                if (perm.path().string().startsWith(p.path().string())) {
+                    return p.authenticationMethod().equals(perm.authenticationMethod())
+                        && p.authority().equals(perm.authority())
+                        && p.method().equals(perm.method());
+                }
             }
         }
         return false;

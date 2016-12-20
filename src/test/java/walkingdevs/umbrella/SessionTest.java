@@ -27,12 +27,27 @@ public class SessionTest extends AbstractTest {
     }
 
     @Test
+    public void shouldAllowPathTree() {
+        Resp resp = ReqBuilder.GET(url.toString() + "anonymous/image")
+            .build()
+            .send();
+        assertEquals(
+            200,
+            resp.status()
+        );
+        assertEquals(
+            "Image",
+            resp.body().text()
+        );
+    }
+
+    @Test
     public void shouldNotAllowNotAllowed() {
         Resp resp = ReqBuilder.GET(url.toString() + "bank-account")
             .build()
             .send();
         assertEquals(
-            404,
+            403,
             resp.status()
         );
         assertNotEquals(
