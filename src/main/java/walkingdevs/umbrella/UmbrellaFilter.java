@@ -77,7 +77,7 @@ class UmbrellaFilter implements Filter {
                 LOG.log(Level.FINE, "ALLOWED {0} to {1}",
                     new Object[] {
                         method,
-                        path
+                        httpReq.getRequestURL()
                     }
                 );
             } else if (processResult == ProcessResult.Unauthorised) {
@@ -88,7 +88,7 @@ class UmbrellaFilter implements Filter {
                 LOG.log(Level.FINE, "DENIED {0} to {1}",
                     new Object[] {
                         method,
-                        path
+                        httpReq.getRequestURL()
                     }
                 );
             }  else if (processResult == ProcessResult.RedirectToIndex) {
@@ -114,6 +114,7 @@ class UmbrellaFilter implements Filter {
             }
         } else {
             // Simply ignore not secured content
+            LOG.log(Level.FINE, "Ignore: {0}", httpReq.getRequestURL());
             httpResp.setStatus(403);
         }
     }
