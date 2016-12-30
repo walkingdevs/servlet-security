@@ -25,18 +25,14 @@ public interface PermsComposer {
 
     static PermsComposer session(String rootPath) {
         return mk(
-            Val.isBlank(
-                rootPath, "rootPath"
-            ).get(),
+            rootPath,
             AuthMethod.Session
         );
     }
 
     static PermsComposer basic(String rootPath) {
         return mk(
-            Val.isBlank(
-                rootPath, "rootPath"
-            ).get(),
+            rootPath,
             AuthMethod.Basic
         );
     }
